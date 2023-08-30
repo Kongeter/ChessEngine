@@ -1,0 +1,40 @@
+public HashMap<Long, Board> debugHashMap = new HashMap<>();
+
+    private void debugHash(long key, Board board) {
+        if (debugHashMap.containsKey(key) && !Arrays.equals(debugHashMap.get(key).currentBoard, board.currentBoard)) {
+            Board x = debugHashMap.get(key);
+            Board y = board;
+            if (printDiff(x.currentBoard, y.currentBoard)) {
+                System.out.println("Unterschiedliche Bretter beim selben Key");
+            }
+
+        }
+        debugHashMap.put(key, board.copy());
+    }
+
+    private static boolean printDiff(byte[] currentBoard1, byte[] currentBoard2) {
+        boolean res = false;
+
+        for (int i = 0; i < 130; i++) {
+            int x = currentBoard1[i];
+            int y = currentBoard2[i];
+            if (validDifference(x, y)) {
+                continue;
+            }
+            if (x != y) {
+                System.out.println("Difference found bei Index: " + i + "     Feld1[i] = " + currentBoard1[i] + "     Feld2[i] = " + currentBoard2[i]);
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    private static boolean validDifference(int fig1, int fig2) {
+        int[][] ValidDifference = {{52, 20}, {60, 28}, {62, 30}, {22, 54}};
+        boolean found = false;
+        for (int[] pair : ValidDifference) {
+            if ((pair[0] == fig1 && pair[1] == fig2) || (pair[0] == fig2 && pair[1] == fig1))
+                found = true;
+        }
+        return found;
+    }
