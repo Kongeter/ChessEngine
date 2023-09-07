@@ -13,21 +13,17 @@ public class ZobristHashMap {
      * Wird für MoveOrdering und als TranspositionTable genutzt.
      * Zur Berechnung des Keys wird Zobrist Hashing genutzt.
      * */
+
     public HashMap<Long, ZobristHashEntry> table = new HashMap<>();
-    long[][] zobristTablePieces = new long[12][64];
-    long[][] zobristPieceHasNotMoved = new long[4][64]; //unbewegter rook / unbewegter king: [0]K [1]R [2]k [2]r
-    long zobristTableWhiteToMove;
-    long[] zobristTableEnPassant = new long[8];
+    static long[][] zobristTablePieces = new long[12][64];
+    static long[][] zobristPieceHasNotMoved = new long[4][64]; //unbewegter rook / unbewegter king: [0]K [1]R [2]k [2]r
+    static long zobristTableWhiteToMove;
+    static long[] zobristTableEnPassant = new long[8];
 
-
-    KeyData data = new KeyData(0, new boolean[8]);
-
-
-    public ZobristHashMap() {
+    static {
         Random random = new Random(-1061214964488769724L);
 
-        zobristTableWhiteToMove = random.nextLong();
-        zobristTableWhiteToMove = 1L; //TODO
+        zobristTableWhiteToMove = 1L;
 
         for (long[] pieceArray : zobristTablePieces) {
             for (int i = 0; i < 64; i++) {
@@ -42,19 +38,15 @@ public class ZobristHashMap {
         for (int i = 0; i < 8; i++) {
             zobristTableEnPassant[i] = random.nextLong();
         }
-
     }
-
 
     public static class KeyData {
         KeyData(long currentKey, boolean[] enPassantPossible) {
             this.currentKey = currentKey;
             this.enPassantPossible = enPassantPossible;
         }
-
         public long currentKey;
         boolean[] enPassantPossible;
-
         public KeyData copy() {
             return new KeyData(this.currentKey, enPassantPossible.clone());
         }
@@ -146,8 +138,4 @@ public class ZobristHashMap {
         }
         return returnArray;
     }
-
-
-
-
 }

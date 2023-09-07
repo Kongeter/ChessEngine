@@ -16,7 +16,7 @@ public class OpeningBookCreator {
      * wird in pureGameNotation abgespeichert
      * @param filepath path zu ordner wo sich pgn Dateien befinden
      */
-    public void pgnToPureAlgebraic(String filepath) throws IOException {
+    public static void pgnToPureAlgebraic(String filepath) throws IOException {
         List<String> filenames = Stream.of(new File(filepath).listFiles())
                 .filter(file -> !file.isDirectory())
                 .map(File::getName)
@@ -45,7 +45,7 @@ public class OpeningBookCreator {
      * @param filepath path zu Ordner mit pureGameNotation Files von Spielen
      * @param depth max opening depth in half-moves
      */
-    public void createOpeningBook(String filepath, int depth) throws IOException {
+    public static void createOpeningBook(String filepath, int depth) throws IOException {
         List<String> filenames = Stream.of(new File(filepath).listFiles())
                 .filter(file -> !file.isDirectory())
                 .map(File::getName)
@@ -73,7 +73,7 @@ public class OpeningBookCreator {
         saveData(data);
     }
 
-    private void openingBookAddSingleGame(String game, int depth, Map<Long, List<HashEntryOB>> data) {
+    private static void openingBookAddSingleGame(String game, int depth, Map<Long, List<HashEntryOB>> data) {
         ZobristHashMap hashMap = new ZobristHashMap();
         Board board = new Board();
         String[] moveArray = game.split("(\\d\\.)|( )"); //splittet pgn bei "[Nummer]."/"[Leerzeichen]", also jeder Halbzug einzeln
@@ -86,7 +86,7 @@ public class OpeningBookCreator {
         }
     }
 
-    private void addMoveToData(long key, String move, Map<Long, List<HashEntryOB>> data) {
+    private static void addMoveToData(long key, String move, Map<Long, List<HashEntryOB>> data) {
         List<HashEntryOB> OldEntryList = data.computeIfAbsent(key, k -> new LinkedList<>());
 
         for (HashEntryOB oldEntrySingleMove : OldEntryList) {
@@ -98,7 +98,7 @@ public class OpeningBookCreator {
         OldEntryList.add(new HashEntryOB(move));
     }
 
-    private void saveData(Map<Long, List<HashEntryOB>> data) throws IOException{
+    private static void saveData(Map<Long, List<HashEntryOB>> data) throws IOException{
         /*HashMap<String, HashEntryOB> data = new HashMap<>();
 
         data.put("Eins", new HashEntryOB("t"));
